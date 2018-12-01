@@ -72,15 +72,37 @@ module Knowledge
     #
     # @example:
     #   learner = Knowledge::Learner.new
+    #   learner.add_adapter_param(adapter: :custom, name: :base_path, value: '/base/path')
+    #
+    # === Parameters ===
+    #
+    # @option [String | Symbol] :adapter
+    # @option [String | Symbol] :name
+    # @option [any] :value
+    #
+    def add_adapter_param(adapter:, name:, value:)
+      @additionnal_params[adapter.to_sym] ||= {}
+      @additionnal_params[adapter.to_sym][name] = value
+    end
+
+    #
+    # === Description ===
+    #
+    # Sets additional params to be passed to the adapter through params option.
+    #
+    # === Usage ===
+    #
+    # @example:
+    #   learner = Knowledge::Learner.new
     #   learner.add_adapter_param(name: :base_path, value: '/base/path')
     #
     # === Parameters ===
     #
-    # @option [String | Symbol] :name
-    # @option [any] :value
+    # @option [String | Symbol] :adapter
+    # @option [any] :params
     #
-    def add_adapter_param(name:, value:)
-      @additionnal_params[name] = value
+    def add_adapter_params(adapter:, params:)
+      @additionnal_params[adapter.to_sym] = params
     end
 
     #

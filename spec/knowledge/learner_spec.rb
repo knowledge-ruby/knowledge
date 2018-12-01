@@ -31,14 +31,28 @@ RSpec.describe Knowledge::Learner do
   end
 
   describe '#add_adapter_param' do
+    let(:adapter_name) { :test_adapter }
     let(:name) { :new_param }
     let(:value) { :new_param_value }
 
     it 'adds the parameter' do
-      subject.add_adapter_param(name: name, value: value)
+      subject.add_adapter_param(adapter: adapter_name, name: name, value: value)
 
-      expect(subject.additionnal_params).to have_key name
-      expect(subject.additionnal_params[name]).to eq value
+      expect(subject.additionnal_params).to have_key adapter_name
+      expect(subject.additionnal_params[adapter_name]).to have_key name
+      expect(subject.additionnal_params[adapter_name][name]).to eq value
+    end
+  end
+
+  describe '#add_adapter_params' do
+    let(:adapter_name) { :test_adapter }
+    let(:params) { { foo: :bar } }
+
+    it 'adds the parameters' do
+      subject.add_adapter_params(adapter: adapter_name, params: params)
+
+      expect(subject.additionnal_params).to have_key adapter_name
+      expect(subject.additionnal_params[adapter_name]).to eq params
     end
   end
 

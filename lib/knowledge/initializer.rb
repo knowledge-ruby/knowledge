@@ -67,7 +67,7 @@ module Knowledge
     def run
       Hash(adapters).each do |name, adapter|
         adapter.new(
-          params: params,
+          params: params[name.to_sym] || params,
           setter: setter,
           variables: variables[name.to_sym] || variables
         ).run
