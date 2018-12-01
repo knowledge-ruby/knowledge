@@ -27,11 +27,11 @@ module Knowledge
   # @attr_reader [Hash] variables
   #
   class Learner
-    # == Attributes ==================================================================================================
+    # == Attributes ====================================================================================================
     attr_accessor :setter
     attr_reader :additionnal_params, :available_adapters, :enabled_adapters, :variables
 
-    # == Constructor =================================================================================================
+    # == Constructor ===================================================================================================
     def initialize
       @additionnal_params = {}
       @available_adapters = {}
@@ -40,7 +40,18 @@ module Knowledge
       @variables = {}
     end
 
-    # == Instance methods ============================================================================================
+    # == Class methods =================================================================================================
+    class << self
+      attr_reader :adapters
+
+      def register_default_adapter(names:, klass:)
+        @adapters ||= {}
+
+        names.each { |name| @adapters[name.to_sym] = klass }
+      end
+    end
+
+    # == Instance methods ==============================================================================================
     #
     # === Description ===
     #
@@ -272,19 +283,14 @@ module Knowledge
     # @option [Boolean] enable
     #
     def use(name:, enable: true)
-      case name.to_sym
-      when :default, :keyval, :key_value
-        register_adapter(name: :default, klass: ::Knowledge::Adapters::KeyValue, enable: enable)
-      when :env, :environment, :env_vars
-        register_adapter(name: :environment, klass: ::Knowledge::Adapters::Environment, enable: enable)
-      when :config, :file, :config_file
-        register_adapter(name: :file, klass: ::Knowledge::Adapters::File, enable: enable)
-      else
-        raise ::Knowledge::RegisterError, "Unable to register following: #{name}"
-      end
+      adapter = self.class.adapters[name.to_sym]
+
+      raise ::Knowledge::RegisterError, "Unable to register following: #{name}" if adapter.nil?
+
+      register_adapter(name: name.to_sym, klass: adapter, enable: enable)
     end
 
-    # == Variables config ============================================================================================
+    # == Variables config ==============================================================================================
     #
     # === Description ===
     #
@@ -356,3 +362,20 @@ module Knowledge
     end
   end
 end
+
+# Registering default adapters
+
+Knowledge::Learner.register_default_adapter(
+  klass: Knowledge::Adapters::Environment,
+  names: %i[env environment env_vars]
+)
+
+Knowledge::Learner.register_default_adapter(
+  klass: Knowledge::Adapters::KeyValue,
+  names: %i[default keyval key_value]
+)
+
+Knowledge::Learner.register_default_adapter(
+  klass: Knowledge::Adapters::File,
+  names: %i[config file config_file]
+)

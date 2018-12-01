@@ -232,10 +232,10 @@ RSpec.describe Knowledge::Learner do
         it 'registers and enables the Knowledge::Adapters::KeyValue adapter' do
           subject.use(name: name)
 
-          expect(subject.available_adapters).to have_key :default
-          expect(subject.enabled_adapters).to have_key :default
-          expect(subject.available_adapters[:default]).to eq Knowledge::Adapters::KeyValue
-          expect(subject.enabled_adapters[:default]).to eq Knowledge::Adapters::KeyValue
+          expect(subject.available_adapters).to have_key name
+          expect(subject.enabled_adapters).to have_key name
+          expect(subject.available_adapters[name]).to eq Knowledge::Adapters::KeyValue
+          expect(subject.enabled_adapters[name]).to eq Knowledge::Adapters::KeyValue
         end
       end
     end
@@ -245,10 +245,10 @@ RSpec.describe Knowledge::Learner do
         it 'registers and enables the Knowledge::Adapters::Environment adapter' do
           subject.use(name: name)
 
-          expect(subject.available_adapters).to have_key :environment
-          expect(subject.enabled_adapters).to have_key :environment
-          expect(subject.available_adapters[:environment]).to eq Knowledge::Adapters::Environment
-          expect(subject.enabled_adapters[:environment]).to eq Knowledge::Adapters::Environment
+          expect(subject.available_adapters).to have_key name
+          expect(subject.enabled_adapters).to have_key name
+          expect(subject.available_adapters[name]).to eq Knowledge::Adapters::Environment
+          expect(subject.enabled_adapters[name]).to eq Knowledge::Adapters::Environment
         end
       end
     end
@@ -258,10 +258,10 @@ RSpec.describe Knowledge::Learner do
         it 'registers and enables the Knowledge::Adapters::File adapter' do
           subject.use(name: name)
 
-          expect(subject.available_adapters).to have_key :file
-          expect(subject.enabled_adapters).to have_key :file
-          expect(subject.available_adapters[:file]).to eq Knowledge::Adapters::File
-          expect(subject.enabled_adapters[:file]).to eq Knowledge::Adapters::File
+          expect(subject.available_adapters).to have_key name
+          expect(subject.enabled_adapters).to have_key name
+          expect(subject.available_adapters[name]).to eq Knowledge::Adapters::File
+          expect(subject.enabled_adapters[name]).to eq Knowledge::Adapters::File
         end
       end
     end
