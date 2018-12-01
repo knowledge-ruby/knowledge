@@ -26,7 +26,7 @@ Or install it yourself as:
 
 ## Usage
 
-Documentation is in progress but here are some examples you can use:
+Documentation is in progress. Please have a look to the [wiki](https://github.com/knowledge-ruby/knowledge/wiki/).
 
 **Using default stuff**:
 
