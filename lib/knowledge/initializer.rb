@@ -48,7 +48,7 @@ module Knowledge
       #
       # === Parameters ===
       #
-      # @option [Array<Class>] :adapters
+      # @option [Hash{Symbol => Class}] :adapters
       # @option [Hash] :params
       # @option [Class] :setter
       # @option [Hash] :variables
@@ -65,11 +65,11 @@ module Knowledge
     # Runs all registered adapters.
     #
     def run
-      Array(adapters).each do |adapter|
+      Hash(adapters).each do |name, adapter|
         adapter.new(
           params: params,
           setter: setter,
-          variables: variables
+          variables: variables[name.to_sym] || variables
         ).run
       end
     end

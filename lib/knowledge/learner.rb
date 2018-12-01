@@ -21,8 +21,8 @@ module Knowledge
   # === Attributes ===
   #
   # @attr_reader [Hash] additionnal_params
-  # @attr_reader [Array<String | Symbol>] available_adapters
-  # @attr_reader [Array<String | Symbol>] enabled_adapters
+  # @attr_reader [Hash{Symbol => Class}] available_adapters
+  # @attr_reader [Hash{Symbol => Class}] enabled_adapters
   # @attr [Class] setter
   # @attr_reader [Hash] variables
   #
@@ -37,6 +37,7 @@ module Knowledge
       @available_adapters = {}
       @enabled_adapters = {}
       @setter = ::Knowledge::Setter.new
+      @variables = {}
     end
 
     # == Instance methods ============================================================================================
@@ -53,10 +54,8 @@ module Knowledge
     #   learner.gather!
     #
     def gather!
-      adapters = enabled_adapters.map { |_name, klass| klass }.compact
-
       ::Knowledge::Initializer.new(
-        adapters: adapters,
+        adapters: enabled_adapters,
         params: additionnal_params,
         setter: setter,
         variables: variables
@@ -124,13 +123,15 @@ module Knowledge
     # === Parameters ===
     #
     # @option [String | Symbol] :name
+    # @option [Hash | String | nil] :variables
     #
-    def enable_adapter(name:)
+    def enable_adapter(name:, variables: nil)
       _key, klass = available_adapters.find { |key, _klass| key.to_sym == name.to_sym }
 
       raise Knowledge::AdapterNotFound, "Cannot find \"#{name}\" in available adapters" if klass.nil?
 
       @enabled_adapters[name.to_sym] = klass
+      set_adapter_variables(name: name, variables: variables)
     end
 
     #
@@ -149,10 +150,45 @@ module Knowledge
     # @option [String | Symbol] :name
     # @option [Class] :klass
     # @option [Boolean] :enable
+    # @option [Hash | String | nil] :variables
     #
-    def register_adapter(name:, klass:, enable: false)
+    def register_adapter(name:, klass:, enable: false, variables: nil)
       @available_adapters[name.to_sym] = klass
       enable_adapter(name: name) if enable
+      set_adapter_variables(name: name, variables: variables)
+    end
+
+    #
+    # === Description ===
+    #
+    # Sets variables for a given adapter
+    #
+    # === Usage ===
+    #
+    # @example:
+    #   learner = Knowledge::Learner.new
+    #   learner.set_adapter_variables(name: :default, variables: { foo: :bar })
+    #
+    # === Attributes ===
+    #
+    # @option [String | Symbol] :name
+    # @option [Hash | nil] :variables
+    #
+    def set_adapter_variables(name:, variables: nil)
+      return unless variables
+
+      case variables
+      when Hash
+        variables = variables[name.to_s] if variables.key?(name.to_s)
+        variables = variables[name.to_sym] if variables.key?(name.to_sym)
+        @variables[name.to_sym] = variables
+      when String
+        set_adapter_variables(name: name, variables: yaml_content(variables))
+      else
+        raise "Unknown variables type #{variables.class}"
+      end
+    rescue StandardError => e
+      raise ::Knowledge::LearnError, e.message
     end
 
     #
@@ -258,9 +294,23 @@ module Knowledge
     # @param [String] path
     #
     def fetch_variables_config(path)
-      file_content = ::File.open(path)
-      descriptor = ::YAML.safe_load(file_content)
+      descriptor = yaml_content(path)
       @variables = descriptor[::Knowledge.config.environment.to_s] || descriptor
+    end
+
+    #
+    # === Description ===
+    #
+    # Loads YAML file content
+    #
+    # === Parameters ===
+    #
+    # @param [String] path
+    #
+    # @return [Hash]
+    #
+    def yaml_content(path)
+      ::YAML.safe_load(::File.open(path))
     end
   end
 end

@@ -30,7 +30,9 @@ RSpec.describe Knowledge::Initializer do
       let(:setter) { :setter }
       let(:variables) { {} }
 
-      subject { described_class.new(adapters: [adapter], params: params, setter: setter, variables: variables) }
+      subject do
+        described_class.new(adapters: { adapter: adapter }, params: params, setter: setter, variables: variables)
+      end
 
       it 'instanciates and runs it' do
         expect(instance_adapter).to receive(:run)
@@ -62,7 +64,7 @@ RSpec.describe Knowledge::Initializer do
         variables: variables
       ).and_return(instance_adapter)
 
-      described_class.run(adapters: [adapter], params: params, setter: setter, variables: variables)
+      described_class.run(adapters: { adapter: adapter }, params: params, setter: setter, variables: variables)
     end
   end
 end
