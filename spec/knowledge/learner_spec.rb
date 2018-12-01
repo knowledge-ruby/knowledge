@@ -121,47 +121,19 @@ RSpec.describe Knowledge::Learner do
 
   describe '#set_adapter_variables' do
     context 'passed variables is a Hash' do
-      context 'scoped on the adapter' do
-        context 'string keys' do
-          let(:variables) { { 'adapter' => { 'foo' => 'bar' } } }
+      let(:name) { :adapter }
+      let(:variables) { { foo: :bar } }
 
-          it 'sets variables as expected' do
-            subject.set_adapter_variables(name: :adapter, variables: variables)
+      it 'relies on #set_adapter_variables_by_hash' do
+        expect(subject).to receive(:set_adapter_variables_by_hash).with(name: name, variables: variables)
 
-            expect(subject.variables).to have_key :adapter
-            expect(subject.variables[:adapter]).to eq variables['adapter']
-          end
-        end
-
-        context 'symbol keys' do
-          let(:variables) { { adapter: { foo: 'bar' } } }
-
-          it 'sets variables as expected' do
-            subject.set_adapter_variables(name: :adapter, variables: variables)
-
-            expect(subject.variables).to have_key :adapter
-            expect(subject.variables[:adapter]).to eq variables[:adapter]
-          end
-        end
-      end
-
-      context 'not scoped on the adapter' do
-        let(:variables) { { foo: 'bar' } }
-
-        it 'sets variables as expected' do
-            subject.set_adapter_variables(name: :adapter, variables: variables)
-
-            expect(subject.variables).to have_key :adapter
-            expect(subject.variables[:adapter]).to eq variables
-          end
+        subject.set_adapter_variables(name: name, variables: variables)
       end
     end
 
     context 'passed variables is a String' do
       let(:path) { 'path/to.yml' }
       let(:yaml_content) { { 'foo' => 'bar' } }
-
-      before {  }
 
       it 'relies on #yaml_content to get a hash and calls itself' do
         expected_params = { name: :adapter, variables: yaml_content }
@@ -180,6 +152,43 @@ RSpec.describe Knowledge::Learner do
     context 'passed variables is not a Hash nor a String nor a falsey' do
       it 'raises a Knowledge::LearnError' do
         expect { subject.set_adapter_variables(name: :anything, variables: []) }.to raise_error Knowledge::LearnError
+      end
+    end
+  end
+
+  describe '#set_adapter_variables_by_hash' do
+    context 'scoped on the adapter' do
+      context 'string keys' do
+        let(:variables) { { 'adapter' => { 'foo' => 'bar' } } }
+
+        it 'sets variables as expected' do
+          subject.set_adapter_variables_by_hash(name: :adapter, variables: variables)
+
+          expect(subject.variables).to have_key :adapter
+          expect(subject.variables[:adapter]).to eq variables['adapter']
+        end
+      end
+
+      context 'symbol keys' do
+        let(:variables) { { adapter: { foo: 'bar' } } }
+
+        it 'sets variables as expected' do
+          subject.set_adapter_variables_by_hash(name: :adapter, variables: variables)
+
+          expect(subject.variables).to have_key :adapter
+          expect(subject.variables[:adapter]).to eq variables[:adapter]
+        end
+      end
+    end
+
+    context 'not scoped on the adapter' do
+      let(:variables) { { foo: 'bar' } }
+
+      it 'sets variables as expected' do
+        subject.set_adapter_variables_by_hash(name: :adapter, variables: variables)
+
+        expect(subject.variables).to have_key :adapter
+        expect(subject.variables[:adapter]).to eq variables
       end
     end
   end
@@ -250,9 +259,9 @@ RSpec.describe Knowledge::Learner do
         subject.use(name: :default, enable: false)
 
         expect(subject.available_adapters).to have_key :default
-          expect(subject.enabled_adapters).not_to have_key :default
-          expect(subject.available_adapters[:default]).to eq Knowledge::Adapters::KeyValue
-          expect(subject.enabled_adapters[:default]).to be_nil
+        expect(subject.enabled_adapters).not_to have_key :default
+        expect(subject.available_adapters[:default]).to eq Knowledge::Adapters::KeyValue
+        expect(subject.enabled_adapters[:default]).to be_nil
       end
     end
   end
@@ -290,24 +299,24 @@ RSpec.describe Knowledge::Learner do
 
     context 'config file without environment at root' do
       it 'sets variables with config file content' do
-        expect(subject).to receive(:yaml_content).and_return({ 'foo' => 'bar' })
+        expect(subject).to receive(:yaml_content).and_return('foo' => 'bar')
 
         subject.send(:fetch_variables_config, path)
 
-        expect(subject.variables).to eq({ 'foo' => 'bar' })
+        expect(subject.variables).to eq('foo' => 'bar')
       end
     end
 
     context 'config file with environment at root' do
       it 'sets variables with config file content according to the right env' do
-        expect(subject).to receive(:yaml_content).and_return({
+        expect(subject).to receive(:yaml_content).and_return(
           'development' => { 'foo' => 'bar' },
-          'production' => { 'bar' => 'baz' },
-        })
+          'production' => { 'bar' => 'baz' }
+        )
 
         subject.send(:fetch_variables_config, path)
 
-        expect(subject.variables).to eq({ 'foo' => 'bar' })
+        expect(subject.variables).to eq('foo' => 'bar')
       end
     end
   end
@@ -321,7 +330,7 @@ RSpec.describe Knowledge::Learner do
     end
 
     it 'just open file and convert to hash' do
-      expect(subject.send(:yaml_content, path)).to eq({ 'foo' => 'bar' })
+      expect(subject.send(:yaml_content, path)).to eq('foo' => 'bar')
     end
   end
 end

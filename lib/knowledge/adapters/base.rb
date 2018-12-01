@@ -25,8 +25,9 @@ module Knowledge
       #
       # @option [Hash] :variables
       # @option [Class] :setter
+      # @option [Hash] :params
       #
-      def initialize(variables:, setter:)
+      def initialize(variables:, setter:, params: nil) # rubocop:disable Lint/UnusedMethodArgument
         @variables = variables
         @setter = setter
       end

@@ -9,7 +9,6 @@ RSpec.describe Knowledge::Adapters::Environment do
   subject { described_class.new(variables: variables, setter: setter) }
 
   describe '#run' do
-
     before do
       ENV['bar'] = 'env_bar'
       ENV['baz'] = 'env_baz'

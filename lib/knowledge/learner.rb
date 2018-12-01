@@ -179,9 +179,7 @@ module Knowledge
 
       case variables
       when Hash
-        variables = variables[name.to_s] if variables.key?(name.to_s)
-        variables = variables[name.to_sym] if variables.key?(name.to_sym)
-        @variables[name.to_sym] = variables
+        set_adapter_variables_by_hash(name: name, variables: variables)
       when String
         set_adapter_variables(name: name, variables: yaml_content(variables))
       else
@@ -189,6 +187,28 @@ module Knowledge
       end
     rescue StandardError => e
       raise ::Knowledge::LearnError, e.message
+    end
+
+    #
+    # === Description ===
+    #
+    # Sets variables as a hash for a given adapter
+    #
+    # === Usage ===
+    #
+    # @example
+    #   learner = Knowledge::Learner.new
+    #   learner.set_adapter_variables_by_hash(name: :default, variables: { foo: :bar })
+    #
+    # === Attributes ===
+    #
+    # @option [String | Symbol] :name
+    # @option [Hash] :variables
+    #
+    def set_adapter_variables_by_hash(name:, variables:)
+      variables = variables[name.to_s] if variables.key?(name.to_s)
+      variables = variables[name.to_sym] if variables.key?(name.to_sym)
+      @variables[name.to_sym] = variables
     end
 
     #

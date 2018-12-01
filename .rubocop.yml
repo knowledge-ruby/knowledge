@@ -7,3 +7,4 @@ Metrics/MethodLength:
 Metrics/BlockLength:
   Exclude:
     - knowledge.gemspec
+    - spec/**/*.rb

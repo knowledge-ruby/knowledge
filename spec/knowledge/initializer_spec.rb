@@ -23,7 +23,6 @@ RSpec.describe Knowledge::Initializer do
     end
 
     context 'with adapters' do
-
       let(:adapter) { double('adapter') }
       let(:instance_adapter) { instance_double('adapter') }
       let(:params) { {} }
