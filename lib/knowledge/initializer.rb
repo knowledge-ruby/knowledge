@@ -2,19 +2,21 @@
 
 module Knowledge
   #
-  # === Description ===
+  # === Description
   #
   # We all need an initializer, here's this lib's initializer.
   # Its role is to gather all informations and run the enabled adapters.
   #
-  # === Usage ===
+  # === Usage
   #
   # @example:
   #   Knowledge::Initializer.new(adapters: adapters, params: { foo: :bar }, setter: setter, variables: variables).run
   #
+  #   # or
+  #
   #   Knowledge::Initializer.run(adapters: adapters, params: { foo: :bar }, setter: setter, variables: variables)
   #
-  # === Attributes ===
+  # === Attributes
   #
   # @attr_reader [Array<String | Symbol>] adapters
   # @attr_reader [Hash] params
@@ -22,15 +24,31 @@ module Knowledge
   # @attr_reader [Hash] variables
   #
   class Initializer
-    # == Attributes ==================================================================================================
-    attr_reader :adapters, :params, :setter, :variables
+    # == Attributes ====================================================================================================
+
+    # Adapters that will be used to retrieve variables' values
+    attr_reader :adapters
+
+    # Additionnal parameters to pass to the adapters
+    attr_reader :params
+
+    # Setter used to set variables after having retrieved their values
+    attr_reader :setter
+
+    # Descriptor for the variables to retrieve/fetch
+    attr_reader :variables
 
     # == Constructor =================================================================================================
+
     #
-    # @option [Array<Class>] :adapters
-    # @option [Hash] :params
-    # @option [Class] :setter
-    # @option [Hash] :variables
+    # Just initializes instance variables with given params.
+    #
+    # === Parameters
+    #
+    # @param :adapters [Array<Class>]
+    # @param :params [Hash]
+    # @param :setter [Class]
+    # @param :variables [Hash]
     #
     def initialize(adapters:, params:, setter:, variables:)
       @adapters = adapters
@@ -42,16 +60,16 @@ module Knowledge
     # == Class methods ===============================================================================================
     class << self
       #
-      # === Description ===
+      # === Description
       #
       # Instanciates the current class and runs all registered adapters.
       #
-      # === Parameters ===
+      # === Parameters
       #
-      # @option [Hash{Symbol => Class}] :adapters
-      # @option [Hash] :params
-      # @option [Class] :setter
-      # @option [Hash] :variables
+      # @param :adapters [Hash{Symbol => Class}]
+      # @param :params [Hash]
+      # @param :setter [Class]
+      # @param :variables [Hash]
       #
       def run(adapters:, params:, setter:, variables: {})
         new(adapters: adapters, params: params, setter: setter, variables: variables).run
@@ -59,8 +77,9 @@ module Knowledge
     end
 
     # == Instance methods ============================================================================================
+
     #
-    # === Description ===
+    # === Description
     #
     # Runs all registered adapters.
     #

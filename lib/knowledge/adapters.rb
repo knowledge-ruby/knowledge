@@ -2,7 +2,7 @@
 
 module Knowledge
   #
-  # === Description ===
+  # === Description
   #
   # This is the namespace used to put the lib's adapters.
   # You can find the adapters by looking to the inclusions below or to the adapters folder.

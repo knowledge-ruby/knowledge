@@ -7,11 +7,11 @@ require 'knowledge/exceptions'
 require 'knowledge/learner'
 
 #
-# === Description ===
+# === Description
 #
 # Configuration is your project's knowledge, let's make it very simple!
 #
-# === Configuration ===
+# === Configuration
 #
 # Funny but quite normal, this gem needs some config.
 # If you're familiar with dry-configurable, it should be very understandable for you.
@@ -27,7 +27,7 @@ require 'knowledge/learner'
 #     config.environment = ENV['RACK_ENV'] || Rails.env || ENV['APP_ENV'] # Or whatever you want
 #   end
 #
-# === Usage ===
+# === Usage
 #
 # @example:
 #   Knowledge.configure do |config|
@@ -47,9 +47,9 @@ require 'knowledge/learner'
 #   learner.gather!
 #
 module Knowledge
-  # == Behaviors ===================================================================================================
+  # == Behaviors =======================================================================================================
   extend Dry::Configurable
 
-  # == Settings ====================================================================================================
+  # == Settings ========================================================================================================
   setting :environment, :development
 end
