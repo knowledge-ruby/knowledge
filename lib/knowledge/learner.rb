@@ -5,6 +5,7 @@ require 'yaml'
 require 'knowledge/initializer'
 require 'knowledge/adapters'
 require 'knowledge/setter'
+require 'knowledge/backupper'
 
 module Knowledge
   #
@@ -94,6 +95,35 @@ module Knowledge
     end
 
     # == Instance methods ==============================================================================================
+
+    #
+    # Gathers all the knowledge and backups it
+    #
+    # === Usage
+    #
+    # @example:
+    #   learner = Knowledge::Learner.new
+    #
+    #   # Do some config (add adapters, define your setter, etc.)
+    #
+    #   learner.backup!
+    #
+    # === Parameters
+    #
+    # @param :path [String] Path to the YAML file where to backup the config
+    #
+    def backup!(path:)
+      backupper = ::Knowledge::Backupper.new(path: path)
+
+      ::Knowledge::Initializer.new(
+        adapters: enabled_adapters,
+        params: additionnal_params,
+        setter: backupper,
+        variables: variables
+      ).run
+
+      backupper.backup!
+    end
 
     #
     # Gathers all the knowledge and put it into your app.

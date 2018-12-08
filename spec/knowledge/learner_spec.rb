@@ -13,6 +13,29 @@ RSpec.describe Knowledge::Learner do
     end
   end
 
+  describe '#backup!' do
+    let(:mock_file) { instance_double('file') }
+    let(:mocked_initializer) { instance_double('initializer') }
+    let(:path) { 'path/to/file.yml' }
+
+    it 'relies on the initializer' do
+      expect(File).to receive(:new).and_return(mock_file)
+      expect(mock_file).to receive(:write)
+      expect(mock_file).to receive(:close)
+
+      expect(mocked_initializer).to receive(:run)
+
+      expect(Knowledge::Initializer).to receive(:new).with(
+        adapters: {},
+        params: {},
+        setter: kind_of(Knowledge::Backupper),
+        variables: {}
+      ).and_return(mocked_initializer)
+
+      subject.backup!(path: path)
+    end
+  end
+
   describe '#gather!' do
     let(:mocked_initializer) { instance_double('initializer') }
 
