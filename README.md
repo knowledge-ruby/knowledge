@@ -2,11 +2,14 @@
 
 Configuration variables are a project's knowledge. This gem is here to help your projects learn what they need to work properly.
 
+Knowledge is a multi-source highly customizable configuration variables manager.
+
+
 ## Disclaimer
 
-The full documentation is currently being written. You should be able to find a better documentation in a few hours.
+The full documentation is currently being written. You should be able to find a better documentation in a few hours / days.
 
-Waiting for the full documentation, you can have a look at the code which is already well-documented.
+Waiting for the full documentation, you can have a look at the code which is already well-documented or at the [wiki](https://github.com/knowledge-ruby/knowledge/wiki)
 
 ## Installation
 
@@ -38,6 +41,43 @@ knowledge.variables = { key: :value }
 knowledge.gather!
 
 Knowledge::Configuration.key # => "value"
+```
+
+**Using a config file**:
+
+```yml
+key: value
+```
+
+```ruby
+knowledge = Knowledge::Learner.new
+
+knowledge.use(name: :file)
+knowledge.variables = 'path/to/file.yml'
+knowledge.gather!
+
+Knowledge::Configuration.key # => "value"
+```
+
+Or
+
+```yml
+development:
+    key: value
+production:
+    key: other_value
+```
+
+```ruby
+Knowledge.config.environment = :production
+
+knowledge = Knowledge::Learner.new
+
+knowledge.use(name: :file)
+knowledge.variables = 'path/to/file.yml'
+knowledge.gather!
+
+Knowledge::Configuration.key # => "other_value"
 ```
 
 **Using your own setter**:
