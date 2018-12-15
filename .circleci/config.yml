@@ -48,6 +48,6 @@ jobs:
           path: /tmp/test-results
           destination: test-results
 
-      - run:
-          name: Rubocop linting
-          command: bundle exec rubocop
+      # - run:
+      #     name: Rubocop linting
+      #     command: bundle exec rubocop
