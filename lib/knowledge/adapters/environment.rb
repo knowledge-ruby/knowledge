@@ -25,14 +25,34 @@ module Knowledge
     # @attr_reader [Hash] variables
     #
     class Environment < Base
+      # == Constructor =================================================================================================
+
+      #
+      # Just initializes instance variables with given params
+      #
+      # === Parameters
+      #
+      # @param :variables [Hash]
+      # @param :setter [Class]
+      # @param :params [Hash]
+      # @option :params [Boolean] :raise_on_value_not_found
+      #
+      def initialize(variables:, setter:, params: {})
+        super
+
+        @raise_not_found = params[:raise_on_value_not_found] || params['raise_on_value_not_found'] || false
+      end
+
       # == Instance Methods ============================================================================================
 
       #
       # Runs the actual adapter.
       #
       def run
-        variables.each do |name_in_project, name_in_env|
-          setter.set(name: name_in_project, value: ENV[name_in_env.to_s])
+        variables.each do |name_in_project, (name_in_env, default_value)|
+          value = @raise_not_found ? ENV.fetch(name_in_env.to_s) : ENV.fetch(name_in_env.to_s) { default_value }
+
+          setter.set(name: name_in_project, value: value)
         end
       end
     end
