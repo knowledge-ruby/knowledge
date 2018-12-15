@@ -44,10 +44,10 @@ RSpec.describe Knowledge::Adapters::Environment do
 
       before { ENV['bar'] = 'env_bar' }
 
-      it 'raises a KeyError' do
+      it 'raises a Knowledge::ValueNotFound' do
         expect(setter).to receive(:set).with(name: :foo, value: ENV['bar'])
 
-        expect { subject.run }.to raise_error KeyError
+        expect { subject.run }.to raise_error Knowledge::ValueNotFound
       end
     end
   end

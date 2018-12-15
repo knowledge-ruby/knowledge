@@ -44,4 +44,11 @@ module Knowledge
   # This error is used when we fail registering an adapter.
   #
   class RegisterError < Error; end
+
+  #
+  # === Description
+  #
+  # This error is used when an adapter cannot find the value of a variable
+  #
+  class ValueNotFound < Error; end
 end
