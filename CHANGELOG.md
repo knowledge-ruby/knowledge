@@ -1,5 +1,20 @@
 # Knowledge - Changelog
 
+## 0.1.2 - 2018-12-15
+
+### Added
+
+- Ability to set default value while using `Knowledge::Adapters::Environment`
+- Ability to raise error when env var not found
+
+### Changed
+
+Nothing
+
+### Removed
+
+Nothing
+
 ## 0.1.1 - 2018-12-08
 
 ### Added
