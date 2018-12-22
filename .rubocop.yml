@@ -1,3 +1,9 @@
+AllCops:
+  TargetRubyVersion: 2.5
+  Exclude:
+    - lib/knowledge/version.rb
+    - vendor/bundle/*
+
 Metrics/LineLength:
   Max: 120
 

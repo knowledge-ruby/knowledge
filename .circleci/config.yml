@@ -6,7 +6,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/ruby:2.5
+      - image: circleci/ruby:2.5.1-node-browsers
       
     working_directory: ~/repo
 
@@ -48,6 +48,6 @@ jobs:
           path: /tmp/test-results
           destination: test-results
 
-      - run:
-          name: Rubocop linting
-          command: bundle exec rubocop
+      # - run:
+      #     name: Rubocop linting
+      #     command: bundle exec rubocop

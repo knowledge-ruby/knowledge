@@ -54,7 +54,6 @@ module Knowledge
 
           setter.set(name: name_in_project, value: value)
         end
-
       rescue ::KeyError => e
         raise ::Knowledge::ValueNotFound, "[#{e.class}]: #{e.message}"
       end
