@@ -60,8 +60,6 @@ module Knowledge
     # == Class methods ===============================================================================================
     class << self
       #
-      # === Description
-      #
       # Instanciates the current class and runs all registered adapters.
       #
       # === Parameters
@@ -78,8 +76,6 @@ module Knowledge
 
     # == Instance methods ============================================================================================
 
-    #
-    # === Description
     #
     # Runs all registered adapters.
     #

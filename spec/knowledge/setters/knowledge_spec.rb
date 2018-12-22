@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Knowledge::Setter do
+RSpec.describe Knowledge::Setters::Knowledge do
   describe '#initialize' do
     it { expect(subject.instance_variable_get(:@configuration)).to be ::Knowledge::Configuration }
   end

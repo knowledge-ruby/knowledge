@@ -20,6 +20,13 @@ module Knowledge
   #
   # === Description
   #
+  # This error is used when a method is not defined
+  #
+  class MethodNotImplemented < Error; end
+
+  #
+  # === Description
+  #
   # This error is used when, at some point, we can't find the adapter we're looking for
   #
   class AdapterNotFound < Error; end
@@ -29,7 +36,7 @@ module Knowledge
   #
   # This error is used when an adapter has no #run method declared
   #
-  class AdapterRunMethodNotImplemented < Error; end
+  class AdapterRunMethodNotImplemented < MethodNotImplemented; end
 
   #
   # === Description
@@ -44,6 +51,13 @@ module Knowledge
   # This error is used when we fail registering an adapter.
   #
   class RegisterError < Error; end
+
+  #
+  # === Description
+  #
+  # This error is used when an adapter has no #run method declared
+  #
+  class SetterSetMethodNotImplemented < MethodNotImplemented; end
 
   #
   # === Description

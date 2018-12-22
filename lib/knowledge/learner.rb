@@ -4,7 +4,7 @@ require 'yaml'
 
 require 'knowledge/initializer'
 require 'knowledge/adapters'
-require 'knowledge/setter'
+require 'knowledge/setters'
 require 'knowledge/backupper'
 
 module Knowledge
@@ -54,7 +54,7 @@ module Knowledge
       @additionnal_params = {}
       @available_adapters = {}
       @enabled_adapters = {}
-      @setter = ::Knowledge::Setter.new
+      @setter = ::Knowledge::Setters::Knowledge.new
       @variables = {}
     end
 

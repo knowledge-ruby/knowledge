@@ -8,7 +8,7 @@ RSpec.describe Knowledge::Learner do
       expect(subject.additionnal_params).not_to be_nil
       expect(subject.available_adapters).not_to be_nil
       expect(subject.enabled_adapters).not_to be_nil
-      expect(subject.setter).to be_a Knowledge::Setter
+      expect(subject.setter).to be_a Knowledge::Setters::Knowledge
       expect(subject.variables).not_to be_nil
     end
   end
@@ -45,7 +45,7 @@ RSpec.describe Knowledge::Learner do
       expect(Knowledge::Initializer).to receive(:new).with(
         adapters: {},
         params: {},
-        setter: kind_of(Knowledge::Setter),
+        setter: kind_of(Knowledge::Setters::Knowledge),
         variables: {}
       ).and_return(mocked_initializer)
 
