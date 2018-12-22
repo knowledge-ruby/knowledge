@@ -54,7 +54,7 @@ module Knowledge
       @additionnal_params = {}
       @available_adapters = {}
       @enabled_adapters = {}
-      @setter = ::Knowledge::Setters::Knowledge.new
+      @setter = ::Knowledge::Setters.config.default.new
       @variables = {}
     end
 
