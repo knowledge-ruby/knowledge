@@ -11,6 +11,12 @@ The full documentation is currently being written. You should be able to find a 
 
 Waiting for the full documentation, you can have a look at the code which is already well-documented or at the [wiki](https://github.com/knowledge-ruby/knowledge/wiki)
 
+## Knowledge official ecosystem
+
+- [knowledge](https://github.com/knowledge-ruby/knowledge) - Core project
+- [knowledge-rails](https://github.com/knowledge-ruby/knowledge-rails) - Rails utilities
+- [knowledge-ssm](https://github.com/knowledge-ruby/knowledge-ssm) - SSM Adapter
+
 ## Installation
 
 Add this line to your application's Gemfile:
