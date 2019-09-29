@@ -1,0 +1,59 @@
+version: "3.7"
+
+services:
+  test:
+    build:
+      context: .
+    command: |
+      bash -c "bundle exec guard --no-interactions -g test"
+    volumes:
+      - .:/app:cached
+    networks:
+      knowledge:
+        aliases:
+          - knowledge.test
+
+  linter:
+    build:
+      context: .
+    command: |
+      bash -c "bundle exec guard --no-interactions -g linter"
+    volumes:
+      - .:/app:cached
+    networks:
+      knowledge:
+        aliases:
+          - knowledge.linter
+
+  doc:
+    build:
+      context: .
+    command: |
+      bash -c "bundle exec yardoc && yard server -B 0.0.0.0 -p 5001 --reload"
+    volumes:
+      - .:/app:cached
+    ports:
+      - "5001:5001"
+    networks:
+      knowledge:
+        aliases:
+          - knowledge.doc
+
+  coverage:
+    build:
+      context: .
+    command: |
+      bash -c "ruby -run -e httpd -- -p 5002 ./coverage"
+    volumes:
+      - .:/app:cached
+    ports:
+      - "5002:5002"
+    networks:
+      knowledge:
+        aliases:
+          - knowledge.coverage
+
+networks:
+  knowledge:
+    name: knowledge
+    driver: bridge
