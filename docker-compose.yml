@@ -1,0 +1,45 @@
+version: "3.7"
+
+services:
+  test:
+    build:
+      context: .
+    command: |
+      bash -c "bundle exec guard --no-interactions -g test"
+    volumes:
+      - .:/app:cached
+    networks:
+      knowledge:
+        aliases:
+          - knowledge.test
+
+  linter:
+    build:
+      context: .
+    command: |
+      bash -c "bundle exec guard --no-interactions -g linter"
+    volumes:
+      - .:/app:cached
+    networks:
+      knowledge:
+        aliases:
+          - knowledge.linter
+
+  doc:
+    build:
+      context: .
+    command: |
+      bash -c "bundle exec guard --no-interactions -g doc"
+    volumes:
+      - .:/app:cached
+    ports:
+      - "5001:5001"
+    networks:
+      knowledge:
+        aliases:
+          - knowledge.doc
+
+networks:
+  knowledge:
+    name: knowledge
+    driver: bridge
