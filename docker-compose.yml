@@ -1,6 +1,17 @@
 version: "3.7"
 
 services:
+  project:
+    build:
+      context: .
+    tty: true
+    volumes:
+      - .:/app:cached
+    networks:
+      knowledge:
+        aliases:
+          - knowledge.project
+
   test:
     build:
       context: .

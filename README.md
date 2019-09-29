@@ -160,6 +160,8 @@ You will be able to see linting and test tasks running each time you change a fi
 
 You will also find the yard doc under `http://localhost:5001` and the coverage under `http://localhost:5002`.
 
+You can have a look at the `Makefile` if you want to use some extra utilities.
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/knowledge-ruby/knowledge. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
