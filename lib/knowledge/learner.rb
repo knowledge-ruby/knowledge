@@ -54,7 +54,7 @@ module Knowledge
       @additionnal_params = {}
       @available_adapters = {}
       @enabled_adapters = {}
-      @setter = ::Knowledge::Setters.config.default.new
+      @setter = ::Knowledge::Setters.default.new
       @variables = {}
     end
 
@@ -417,7 +417,7 @@ module Knowledge
     #
     def fetch_variables_config(path)
       descriptor = yaml_content(path)
-      @variables = descriptor[::Knowledge.config.environment.to_s] || descriptor
+      @variables = descriptor[::Knowledge.environment.to_s] || descriptor
     end
 
     #

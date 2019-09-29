@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-require 'dry-configurable'
-
 require 'knowledge/version'
 require 'knowledge/exceptions'
+require 'knowledge/configurable'
 require 'knowledge/learner'
 
 #
@@ -19,7 +18,7 @@ require 'knowledge/learner'
 #
 # You can configure it one by one or all at once:
 #
-# @example:
+# @example
 #
 #   Knowledge.config.environment = ENV['RACK_ENV'] || Rails.env || ENV['APP_ENV'] # Or whatever you want
 #
@@ -29,7 +28,7 @@ require 'knowledge/learner'
 #
 # === Usage
 #
-# @example:
+# @example
 #   Knowledge.configure do |config|
 #     config.environment = :production
 #   end
@@ -40,7 +39,9 @@ require 'knowledge/learner'
 #   learner = Knowledge::Learner.new
 #   learner.setter = MyCustomProjectVariableSetter
 #   learner.variables = 'path/to/config/file'
+#
 #   # or
+#
 #   learner.variables = { name: 'value_key' }
 #   learner.register_adapter(:custom, MyCustomProjectVariableAdapter, enable: true)
 #
@@ -48,8 +49,8 @@ require 'knowledge/learner'
 #
 module Knowledge
   # == Behaviors =======================================================================================================
-  extend Dry::Configurable
+  extend Configurable
 
   # == Settings ========================================================================================================
-  setting :environment, :development
+  setting :environment, default: :development
 end

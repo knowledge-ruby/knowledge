@@ -9,7 +9,7 @@ module Knowledge
   #
   module Setters
     # == Behaviors =====================================================================================================
-    extend Dry::Configurable
+    extend ::Knowledge::Configurable
 
     # == Settings ======================================================================================================
     setting :default
@@ -19,4 +19,4 @@ end
 require 'knowledge/setters/base'
 require 'knowledge/setters/knowledge'
 
-Knowledge::Setters.config.default = Knowledge::Setters::Knowledge
+Knowledge::Setters.default = Knowledge::Setters::Knowledge
