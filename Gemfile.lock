@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    knowledge (0.1.4)
+    knowledge (1.0.0.pre.beta.1)
 
 GEM
   remote: https://rubygems.org/

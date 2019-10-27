@@ -7,9 +7,9 @@ Knowledge is a multi-source highly customizable configuration variables manager.
 
 ## Disclaimer
 
-The full documentation is currently being written. You should be able to find a better documentation in a few hours / days.
+The library has been entirely rewritten and I'm currently writing the documentation for the new version. If you don't want to wait for the documentation to use the new version, please refer to the few examples below and to the code directly.
 
-Waiting for the full documentation, you can have a look at the code which is already well-documented or at the [wiki](https://github.com/knowledge-ruby/knowledge/wiki)
+You can find the documentation for `0.x` versions in the [wiki](https://github.com/knowledge-ruby/knowledge/wiki)
 
 ## Knowledge official ecosystem
 
@@ -22,7 +22,7 @@ Waiting for the full documentation, you can have a look at the code which is alr
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'knowledge'
+gem 'knowledge', '~> 1.0'
 ```
 
 And then execute:
@@ -31,20 +31,14 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install knowledge
+    $ gem install knowledge -v "~> 1.0"
 
 ## Usage
-
-Documentation is in progress. Please have a look to the [wiki](https://github.com/knowledge-ruby/knowledge/wiki/).
 
 **Using default stuff**:
 
 ```ruby
-knowledge = Knowledge::Learner.new
-
-knowledge.use(name: :default)
-knowledge.variables = { key: :value }
-knowledge.gather!
+Knowledge.learn_from :hash, variables: { key: :value }
 
 Knowledge::Configuration.key # => "value"
 ```
@@ -56,11 +50,7 @@ key: value
 ```
 
 ```ruby
-knowledge = Knowledge::Learner.new
-
-knowledge.use(name: :file)
-knowledge.variables = 'path/to/file.yml'
-knowledge.gather!
+Knowledge.learn_from :yaml, variables: 'path/to/file.yml'
 
 Knowledge::Configuration.key # => "value"
 ```
@@ -75,59 +65,59 @@ production:
 ```
 
 ```ruby
-Knowledge.config.environment = :production
+Knowledge.environment = :production
 
-knowledge = Knowledge::Learner.new
-
-knowledge.use(name: :file)
-knowledge.variables = 'path/to/file.yml'
-knowledge.gather!
+Knowledge.learn_from :yaml, variables: 'path/to/file.yml'
 
 Knowledge::Configuration.key # => "other_value"
+```
+
+**Using your own getter**:
+
+```ruby
+module Knowledge
+  module Getters
+    class MyCustomUrlGetter
+      def initialize(url)
+        @url = url
+      end
+
+      def call
+        @data = JSON.parse(HTTParty.get(url).body)
+      end
+    end
+  end
+end
+
+url = 'https://api.mycompany.com/config/project-5.json'
+
+Knowledge.learn_from :my_custom_url_getter, variables: url
+
+Rails.application.config.key # => "value"
 ```
 
 **Using your own setter**:
 
 ```ruby
-#
-# === Description ===
-#
-# Sets config variables in Rails.application.config
-#
-# === Usage ===
-#
-# @example:
-#   setter = MyCustomRailsSetter.new
-#   setter.set(name: :foo, value: :bar)
-#
-#   Rails.application.config.foo # => "bar"
-#
-class MyCustomRailsSetter
-    #
-    # === Description ===
-    #
-    # Sets config variables in the right place.
-    #
-    # === Usage ===
-    #
-    # See the same section in the class description.
-    #
-    # === Attributes ===
-    #
-    # @option [String | Symbol] :name
-    # @option [Any] :value
-    #
-    def set(name:, value:)
+module Knowledge
+  module Setters
+    class MyCustomRailsSetter < Base
+      def call
+        @data.each do |key, value|
+          set(name: key, value: value)
+        end
+      end
+
+      def set(name:, value:)
         Rails.application.config.public_send("#{name}=", value)
+      end
     end
+  end
 end
 
-knowledge = Knowledge::Learner.new
-
-knowledge.setter = MyCustomRailsSetter.new
-knowledge.use(name: :default)
-knowledge.variables = { key: :value }
-knowledge.gather!
+Knowledge.learn_from :hash,
+                     variables: { key: :value },
+                     setter: :my_custom_rails_setter
 
 Rails.application.config.key # => "value"
 ```

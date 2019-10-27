@@ -1,17 +1,16 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 RSpec.describe Knowledge::Setters::Knowledge do
-  describe '#initialize' do
-    it { expect(subject.instance_variable_get(:@configuration)).to be ::Knowledge::Configuration }
-  end
+  subject(:setter) { described_class.new(data: data) }
 
-  describe '#set' do
-    it 'sets the variable on the configuration' do
-      subject.set(name: :foo, value: :bar)
+  let(:data) { { foo: :bar, baz: 'hello' } }
 
-      expect(::Knowledge::Configuration.foo).to eq :bar
+  describe '#call' do
+    before { setter.call }
+
+    it 'sets the variables on Knowledge::Configuration' do
+      expect(Knowledge::Configuration.foo).to eq :bar
+      expect(Knowledge::Configuration.baz).to eq 'hello'
     end
   end
 end

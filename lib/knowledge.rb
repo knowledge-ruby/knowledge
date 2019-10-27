@@ -1,11 +1,17 @@
 # frozen_string_literal: true
 
 require 'knowledge/version'
-require 'knowledge/exceptions'
-require 'knowledge/configurable'
-require 'knowledge/learner'
+require 'knowledge/utils'
+require 'knowledge/core'
+require 'knowledge/behaviors'
+require 'knowledge/use_cases'
 
-#
+require 'knowledge/exporters'
+require 'knowledge/getters'
+require 'knowledge/setters'
+
+require 'knowledge/configuration'
+
 # === Description
 #
 # Configuration is your project's knowledge, let's make it very simple!
@@ -48,8 +54,21 @@ require 'knowledge/learner'
 #   learner.gather!
 #
 module Knowledge
-  # == Behaviors =======================================================================================================
-  extend Configurable
+  # === Errors
+  class UnknownExporter < ArgumentError; end
+  class UnknownGetter < ArgumentError; end
+  class UnknownSetter < ArgumentError; end
+
+  class NotCallable < NoMethodError; end
+  class NotImplemented < NoMethodError; end
+
+  # === Behaviors
+  extend Behaviors::Configurable
+
+  # === Use Cases
+  include UseCases::LearnFrom
+  include UseCases::ExportIn
+  include UseCases::ExportLearningsFrom
 
   # == Settings ========================================================================================================
   setting :environment, default: :development

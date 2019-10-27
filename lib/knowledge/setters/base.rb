@@ -1,46 +1,26 @@
 # frozen_string_literal: true
 
-require 'knowledge/configuration'
-
 module Knowledge
   module Setters
+    # Base setter
     #
-    # === Description
+    # @abstract
     #
-    # This adapter is the base setter.
-    # It does nothing specific but is meant to manage all generic stuff.
-    #
-    # === Usage
-    #
-    # Just inherit from it
-    #
-    # @example:
-    #
-    #   class MySuperSetter < Knowledge::Setters::Base; end
-    #
-    # === Attributes
-    #
-    # @attr_reader [Class | Hash | Object] configuration
-    #
+    # @example
+    #   class MySetter < Base
+    #     def call
+    #       @data.each do |name, value|
+    #         my_strategy.set(name: name, value: value)
+    #       end
+    #     end
+    #   end
     class Base
-      # == Attributes ==================================================================================================
+      def initialize(data: {})
+        @data = data
+      end
 
-      # Configuration object - can be whetever your setter knows how to work with
-      attr_reader :configuration
-
-      # == Instance methods ============================================================================================
-
-      #
-      # Sets the variable.
-      #
-      # === Parameters
-      #
-      # @param :name [String | Symbol]
-      # @param :value [Any]
-      #
-      def set(name:, value:)
-        error_message = "Expect setter to define #set method to be able to set #{name} with value '#{value}'"
-        raise ::Knowledge::SetterSetMethodNotImplemented, error_message
+      def call
+        ::Knowledge::Utils.raise_not_callable_parent_method(parent_class: 'Knowledge::Setters::Base')
       end
     end
   end

@@ -12,3 +12,6 @@
 
 /.ruby-*
 /knowledge-*.gem
+
+# RubyMine
+/.idea

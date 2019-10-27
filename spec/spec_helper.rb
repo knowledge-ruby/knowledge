@@ -9,6 +9,8 @@ SimpleCov.start
 require 'knowledge'
 
 RSpec.configure do |config|
+  config.after(:each) { Knowledge::Configuration.reset }
+
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = '.rspec_status'
 
