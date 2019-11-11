@@ -3,6 +3,6 @@
 module Knowledge
   # Stores the app's configuration
   module Configuration
-    extend Behaviors::Configurable
+    include Behaviors::Configurable
   end
 end

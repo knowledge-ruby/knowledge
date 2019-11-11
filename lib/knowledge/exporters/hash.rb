@@ -11,6 +11,9 @@ module Knowledge
     #
     #   result # => { foo: 'bar' }
     class Hash < Base
+      # Returns data as is
+      #
+      # @return [Hash]
       def call
         @data
       end

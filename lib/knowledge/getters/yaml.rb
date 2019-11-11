@@ -12,10 +12,13 @@ module Knowledge
     #
     #   result # => { foo: 'bar' }
     class Yaml < File
+      # Reads the file, sets and returns the variables
+      #
+      # @return [Hash]
       def call
         set_variables(::YAML.load_file(@path))
 
-        symbolize_keys(@variables)
+        ::Knowledge::Utils.symbolize_keys(@variables)
       end
     end
   end

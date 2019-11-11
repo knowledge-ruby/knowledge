@@ -11,6 +11,9 @@ module Knowledge
     #
     #   result # => { foo: 'bar' }
     class Hash < Base
+      # Returns the variables as is
+      #
+      # @return [Hash]
       def call
         @variables
       end

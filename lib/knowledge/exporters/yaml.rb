@@ -11,6 +11,9 @@ module Knowledge
     #
     #   `cat tmp/config.yml` # => "foo: bar"
     class Yaml < Base
+      # Yamlifies data and writes it in a file if destination given
+      #
+      # @return [String]
       def call
         result = @data.to_yaml
 

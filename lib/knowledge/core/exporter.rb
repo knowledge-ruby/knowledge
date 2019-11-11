@@ -2,7 +2,7 @@
 
 module Knowledge
   module Core
-    # Knowledge's core exporter is design to backup the configuration using different strategies.
+    # Knowledge's core exporter is designed to backup the configuration using strategies.
     # All export strategies can be found under {Knowledge::Exporters}'s namespace.
     #
     # @example
@@ -13,6 +13,8 @@ module Knowledge
       # @param type [String, Symbol] Export type corresponding to exporter strategy's class name
       # @param destination [any] Whatever is required by the exporter strategy to be able to export to the destination
       # @param data [Hash] Set of data to be exported
+      #
+      # @return {Knowledge::Core::Exporter}
       def initialize(type:, destination:, data:)
         @type = ::Knowledge::Utils.camelize(type)
         @destination = destination
@@ -28,7 +30,7 @@ module Knowledge
 
       # Sets missing instance variables and exports data
       #
-      # @param yype [String, Symbol] Export type corresponding to exporter strategy's class
+      # @param type [String, Symbol] Export type corresponding to exporter strategy's class
       # @param destination [any] Whatever is required by the exporter strategy to be able to export to the destination
       def in(type, destination:)
         @type = ::Knowledge::Utils.camelize(type)
@@ -41,7 +43,7 @@ module Knowledge
 
       # Finds the right strategy and ensure it's callable
       #
-      # @raise [Knowledge::NotCallable] if the strategy's instance does not respond to call
+      # @raise {Knowledge::NotCallable} if the strategy's instance does not respond to call
       #
       # @return an instanciated strategy inheriting from {Knowledge::Exporters::Base}
       def resolve_exporter
@@ -50,8 +52,8 @@ module Knowledge
 
       # Resolves the strategy in {Knowledge::Exporters} namespace and ensures it's a class
       #
-      # @raise [Knowledge::UnknownExporter] if the strategy cannot be found
-      # @raise [Knowledge::UnknownExporter] if the strategy is not a class
+      # @raise {Knowledge::UnknownExporter} if the strategy cannot be found
+      # @raise {Knowledge::UnknownExporter} if the strategy is not a class
       #
       # @return a strategy inheriting from {Knowledge::Exporters::Base}
       def exporter_class

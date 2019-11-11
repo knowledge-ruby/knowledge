@@ -9,6 +9,9 @@ module Knowledge
     #
     #   Knowledge::Setters::Exporter.new(data: data).call # => { foo: 'bar' }
     class Exporter < Base
+      # Returns the variables as is
+      #
+      # @return [Hash]
       def call
         @data
       end

@@ -11,6 +11,9 @@ module Knowledge
     #
     #   `cat tmp/config.json` # => "{\"foo\":\"bar\"}"
     class Json < Base
+      # Jsonifies data and writes it in a file if destination given
+      #
+      # @return [String]
       def call
         result = @data.to_json
 

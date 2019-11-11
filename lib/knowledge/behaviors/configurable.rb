@@ -8,18 +8,23 @@ module Knowledge
     #
     # @example
     #   module Configuration
+    #     # Include the configurable behavior
     #     include Knowledge::Behaviors::Configurable
     #
+    #     # Create your settings from your module/class directly
     #     setting :foo, default: :bar
     #   end
     #
+    #   # Create your settings from outside of your module/class
     #   Configuration.setting :bar, default: :foo
     #   Configuration.setting :baz, default: :bar
     #
+    #   # Access your settings by whatever way you want
     #   Configuration.foo # => "bar"
     #   Configuration[:bar] # => "foo"
     #   Configuration['baz'] # => "bar"
     #
+    #   # Mutate your settings by whatever way you want
     #   Configuration.baz = 'baz'
     #   Configuration[:foo] = 'baz'
     #   Configuration['bar'] = 'baz'
@@ -28,9 +33,10 @@ module Knowledge
     #   Configuration.bar # => "baz"
     #   Configuration.baz # => "baz"
     #
+    #   # Reset everything
     #   Configuration.reset
     module Configurable
-      def self.extended(base)
+      def self.included(base)
         base.singleton_class.extend(Forwardable)
         base.extend(ClassMethods)
       end
@@ -45,7 +51,7 @@ module Knowledge
         #   Configuration.foo # => "bar"
         #
         # @param name [String, Symbol] The setting's name
-        # @param default [any]
+        # @param default [any, nil] The setting's default / initial value
         def setting(name, default: nil)
           configuration.class.send(:attr_accessor, name)
           configuration.public_send("#{name}=", default)
@@ -59,8 +65,9 @@ module Knowledge
         #   Configuration.configure do |config|
         #     config.foo = 'bar' # => "bar"
         #     config.unexisting_attribute = 'foo' # NoMethodError
+        #   end
         #
-        # @yield [Class] the configuration
+        # @yield [Config] the configuration
         def configure
           yield configuration
         end
@@ -100,10 +107,10 @@ module Knowledge
 
         private
 
-        # :nodoc:
+        # Class used to manage the configuration variables
         class Config; end
 
-        # :nodoc:
+        # @return [Config]
         def configuration
           @configuration ||= Config.new
         end
