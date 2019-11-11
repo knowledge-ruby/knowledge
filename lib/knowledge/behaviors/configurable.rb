@@ -105,6 +105,17 @@ module Knowledge
           configuration.public_send("#{name}=", value)
         end
 
+        # @return [String]
+        def inspect
+          inspect_string = "#<#{name}"
+
+          configuration.instance_variables.each do |var_name|
+            inspect_string = "#{inspect_string} #{var_name}=#{configuration.instance_variable_get(var_name)}"
+          end
+
+          "#{inspect_string}>"
+        end
+
         private
 
         # Class used to manage the configuration variables
