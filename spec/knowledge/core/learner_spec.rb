@@ -8,16 +8,35 @@ RSpec.describe Knowledge::Core::Learner do
   let(:setter) { :default_setter }
 
   describe '#initialize' do
-    it 'camelizes source_type' do
-      expect(learner.instance_variable_get(:@source)).to eq 'HashData'
+    context 'with class arguments' do
+      let(:source_type) { Class }
+      let(:setter) { Class }
+
+      it 'camelizes source_type' do
+        expect(learner.instance_variable_get(:@source)).to eq source_type
+      end
+
+      it 'sets variables' do
+        expect(learner.instance_variable_get(:@variables)).to eq variables
+      end
+
+      it 'camelizes setter' do
+        expect(learner.instance_variable_get(:@setter)).to eq setter
+      end
     end
 
-    it 'sets variables' do
-      expect(learner.instance_variable_get(:@variables)).to eq variables
-    end
+    context 'with string arguments' do
+      it 'camelizes source_type' do
+        expect(learner.instance_variable_get(:@source)).to eq 'HashData'
+      end
 
-    it 'camelizes setter' do
-      expect(learner.instance_variable_get(:@setter)).to eq 'DefaultSetter'
+      it 'sets variables' do
+        expect(learner.instance_variable_get(:@variables)).to eq variables
+      end
+
+      it 'camelizes setter' do
+        expect(learner.instance_variable_get(:@setter)).to eq 'DefaultSetter'
+      end
     end
   end
 

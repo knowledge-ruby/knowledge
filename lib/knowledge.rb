@@ -118,4 +118,5 @@ module Knowledge
 
   # === Settings
   setting :environment, default: :development
+  setting :setter, default: Knowledge::Setters::Default
 end

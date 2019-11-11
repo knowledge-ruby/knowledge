@@ -48,6 +48,14 @@ RSpec.describe Knowledge::Utils do
       TestEror
     end
 
+    context 'when class does not need to be resolved' do
+      let(:class_name) { Class }
+
+      it 'returns it as is' do
+        expect(resolve).to eq class_name
+      end
+    end
+
     context 'when class is not found' do
       before { allow(namespace).to receive(:const_get).and_raise NameError }
 

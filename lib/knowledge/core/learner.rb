@@ -11,10 +11,10 @@ module Knowledge
       # @param setter [String, Symbol]
       #
       # @return {Knowledge::Core::Learner}
-      def initialize(source_type:, variables:, setter:)
-        @source = ::Knowledge::Utils.camelize(source_type)
+      def initialize(source_type:, variables:, setter: ::Knowledge.setter)
+        @setter = setter.is_a?(Class) ? setter : ::Knowledge::Utils.camelize(setter)
+        @source = source_type.is_a?(Class) ? source_type : ::Knowledge::Utils.camelize(source_type)
         @variables = variables
-        @setter = ::Knowledge::Utils.camelize(setter)
       end
 
       # Learn process

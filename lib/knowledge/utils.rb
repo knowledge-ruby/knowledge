@@ -9,6 +9,8 @@ module Knowledge
       end
 
       def resolve_class(namespace:, class_name:, exception:)
+        return class_name if class_name.is_a?(Class)
+
         result = namespace.const_get(class_name)
 
         raise exception, "Cannot find #{namespace}::#{class_name}" unless result.is_a?(Class)
